@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeilVest Registration</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        
+   
+        body {
+            font-family: Arial, sans-serif; /* Set a font for the body */
+            background-color: #fff; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            text-align: center;
+        }
+
+        .registration-form {
+            background-color: #fff; /* White background for the form */
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .app-title {
+            color: hotpink;
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-align: center; /* Center the title */
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 10px; /* Space between input fields */
+            margin-left: -10px;
+            display: flex; /* Use flexbox for alignment */
+            align-items: center; /* Center items vertically */
+            border: 1px solid hotpink; /* Optional: Border for input fields */
+            border-radius: 10px; /* Rounded corners */
+            padding: 10px; /* Padding around the content */
+        }
+
+        .icon {
+            width: 20px; /* Icon size */
+            height: 20px; /* Icon size */
+            margin-right: 10px; /* Space between icon and input */
+        }
+        
+        input {
+            border: none; /* No border for the input */
+            flex: 1; /* Allow input to grow and fill available space */
+            font-size: 16px; /* Font size for input text */
+            outline: none; /* No outline on focus */
+            color: #333; /* Text color */
+        }
+        
+        input::placeholder {
+            color: #aaa; /* Placeholder text color */
+        }
+        
+        
+        .register-btn {
+            width: 100%; /* Ensures button occupies the full width */
+            background-color: hotpink;
+            color: #fff;
+            border: none;
+            padding: 15px; /* Padding for better button appearance */
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 20px; /* Space above button */
+            transition: background-color 0.3s; /* Smooth transition effect */
+        }
+        
+        .register-btn:hover {
+            background-color: #d81b60; /* Darker pink on hover */
+        }
+        .send-otp-btn {
+            padding: 5px 10px; /* Adjust the padding for height and width */
+            font-size: 12px;   /* Change the font size */
+            border: none;      /* Remove border if needed */
+            border-radius: 4px; /* Optional: make the corners rounded */
+            background-color: rgb(255, 175, 216);
+            color: rgb(255, 255, 255);      /* Text color */
+            cursor: pointer;   /* Pointer cursor on hover */
+        }
+        
+        .send-otp-btn:hover {
+            background-color: hotpink;
+        }
+        
+        .login-link {
+            display: block;
+            margin-top: 20px;
+            color: hotpink;
+            text-decoration: none;
+        }
+        
+        .login-link:hover {
+            color: #d81b60;
+        }
+        
+        /* Responsive Design for Mobile */
+        @media (max-width: 600px) {
+            .registration-container {
+                width: 90%;
+            }
+        
+        }
+        #message {
+            color: red; /* Default color for message */
+            text-align: center; /* Center the text */
+            margin-top: 10px; /* Space above message */
+            height: 40px; /* Fixed height to prevent layout shifts */
+            overflow: hidden; /* Hide overflow to keep layout neat */
+            transition: all 0.3s ease; /* Smooth transition */
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0); }
+            25% { transform: translate(-5px); }
+            50% { transform: translate(5px); }
+            75% { transform: translate(-5px); }
+            100% { transform: translate(0); }
+        }
+
+        .shake {
+            animation: shake 0.5s; /* Duration of the shake */
+        }
+
+        .register-btn {
+            background-color: hotpink; /* Button color */
+            color: white; /* Button text color */
+            border: none; /* No border */
+            padding: 10px 15px; /* Padding for button */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        .register-btn:disabled {
+            background-color: #ccc; /* Disabled button color */
+            cursor: not-allowed; /* Not-allowed cursor */
+        }
+        @keyframes shake {
+            0% { transform: translate(0); }
+            25% { transform: translate(-5px); }
+            50% { transform: translate(5px); }
+            75% { transform: translate(-5px); }
+            100% { transform: translate(0); }
+        }
+        
+        .shake {
+            animation: shake 0.5s; 
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <form id="registerForm" class="registration-form">
+        <h1 class="app-title">VeilVest</h1>
+        
+        <div class="form-group">
+            <img src="phone-icon.png" alt="phone icon" class="icon">
+            <input type="text" id="phone" placeholder="Please enter phone number" required>
+        </div>
+
+        <div class="form-group">
+            <img src="password-icon.png" alt="password icon" class="icon">
+            <input type="password" id="password" placeholder="Please enter your password" required>
+        </div>  
+
+        <div class="form-group">
+            <img src="password-icon.png" alt="password icon" class="icon">
+            <input type="password" id="confirm-password" placeholder="Enter password again" required>
+        </div>
+
+        <div class="form-group">
+            <img src="invitation-icon.png" alt="invitation icon" class="icon">
+            <input type="text" id="invitation-code" placeholder="Please enter the invitation code">
+        </div>
+
+        <div class="form-group">
+            <img src="verification-icon.png" alt="verification icon" class="icon">
+            <input type="text" id="verification-code" placeholder="Please enter verification code" required>
+            <button type="button" id="sendOtpButton" class="send-otp-btn">Send OTP</button>
+
+        </div>
+        <script>
+            // Function to send OTP after entering the phone number
+            function sendOTP() {
+                const phoneNumber = document.getElementById('phone').value;
+        
+                // Validate phone number length (assuming 11 digits)
+                if (phoneNumber.length === 11) {
+                    const generatedOTP = Math.floor(100000 + Math.random() * 900000); // Generate random 6-digit OTP
+                    localStorage.setItem('otp', generatedOTP); // Save OTP in localStorage for validation
+        
+                    alert(`Your OTP code is: ${generatedOTP}`); // For demonstration (send this OTP via SMS in real-world)
+                    
+                    // Disable the phone input and enable verification code field
+                    document.getElementById('phone').disabled = true;
+                    document.getElementById('verification-code').disabled = false;
+                    document.getElementById('message').textContent = 'OTP sent to your phone number';
+                } else {
+                    document.getElementById('message').textContent = 'Please enter a valid 11-digit phone number.';
+                }
+            }
+        
+            // Function to validate OTP and confirm the form submission
+            function validateForm() {
+                const enteredOTP = document.getElementById('verification-code').value;
+                const storedOTP = localStorage.getItem('otp');
+        
+                if (enteredOTP === storedOTP) {
+                    document.getElementById('message').textContent = 'OTP Verified! You are registered successfully!';
+                    return true; // Proceed with form submission
+                } else {
+                    document.getElementById('message').textContent = 'Invalid OTP. Please try again.';
+                    return false; // Prevent form submission
+                }
+            }
+        </script>
+
+        <button type="submit" class="register-btn">Register Now</button>
+    </div>
+        <a href="login.html" class="login-link">Login Account</a>
+
+        <p id="message" style="color: red; text-align: center;"></p> 
+        <div id="error-message" style="color:red; display:none;"></div> <!-- Error message -->
+
+    </form>
+   
+
+
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
+    
+            // Get input values
+            const phoneInput = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const messageElement = document.getElementById('message'); // Get the message element
+    
+            // Validate phone number format (11 digits)
+            const phoneRegex = /^[0-9]{11}$/; // 11-digit phone number
+            if (!phoneRegex.test(phoneInput)) {
+                showMessage("Please enter a valid 11-digit phone number.", "red");
+                return;
+            }
+    
+            // **Check if the device already has a registered phone number**
+            const registeredNumberOnDevice = localStorage.getItem('registeredNumber');
+            if (registeredNumberOnDevice && registeredNumberOnDevice !== phoneInput) {
+                showMessage("Your device is already linked to a registered phone number. For security reasons, only one phone number can be registered per device.", "red");
+                return; // Block registration if a different number is already stored
+            } else if (registeredNumberOnDevice) {
+                showMessage("This phone number is already registered on this device.", "red");
+                return; // Block if the same number is already registered
+            }
+    
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                showMessage("Passwords do not match.", "red");
+                return; // Exit if passwords don't match
+            }
+    
+            // Retrieve registered users from localStorage
+            let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+    
+            // Check if the phone number is already registered in the list of users
+            if (registeredUsers.some(user => user.phone === phoneInput)) {
+                showMessage("This phone number is already registered.", "red");
+                return; // Exit if the number is already registered
+            }
+    
+            // Add new user to the array and save it to localStorage
+            registeredUsers.push({ phone: phoneInput, password: password });
+            localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers)); // Save updated users
+    
+            // **Save the registered phone number in localStorage to enforce 1 number per device**
+            localStorage.setItem('registeredNumber', phoneInput);
+    
+            showMessage("Registration successful!", "green");
+    
+            // Clear input fields after successful registration
+            document.getElementById('phone').value = ''; 
+            document.getElementById('password').value = ''; 
+            document.getElementById('confirm-password').value = ''; 
+            document.getElementById('invitation-code').value = ''; 
+            document.getElementById('verification-code').value = ''; 
+    
+            // Redirect to login page
+            window.location.href = 'login.html'; 
+        });
+    
+        // Function to show messages with animations
+        function showMessage(message, color) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = message;
+            messageElement.style.color = color;
+    
+            // Add shake animation class
+            messageElement.classList.add('shake');
+    
+            // Remove the shake class after the animation is done
+            setTimeout(() => {
+                messageElement.classList.remove('shake');
+            }, 500);
+        }
+    </script>
+    
+    
+
+
+    
+    
+    <script src="scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Account</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+    <style>
+        /* Chatbot Button */
+.chatbot-button {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background-color: rgb(249, 174, 212);
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.chatbot-button:hover {
+    background-color: hotpink;
+}
+
+/* Chatbox */
+.chatbox {
+    display: none; /* Hidden by default */
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 350px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.chatbox-header {
+    background-color: hotpink;
+    color: white;
+    padding: 15px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbox-body {
+    padding: 15px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.chatbox-input {
+    display: flex;
+    padding: 15px;
+    background-color: #f1f1f1;
+}
+
+.chatbox-input input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.chatbox-input button {
+    background-color:hotpink;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.faq-button {
+    display: block;
+    background-color: #f1f1f1;
+    color: #333;
+    border: none;
+    padding: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+}
+
+.faq-button:hover {
+    background-color: #ddd;
+}
+
+.chatbox-message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.bot-message {
+    background-color: #eee;
+    color: #333;
+}
+
+.user-message {
+    background-color: hotpink;
+    color: white;
+    align-self: flex-end;
+}
+
+.close-chatbox {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.close-chatbox:hover {
+    color: #f1f1f1;
+}
+.recharge-instructions {
+    margin: 20px; /* Spacing around the container */
+    font-family: Arial, sans-serif; /* Clean, readable font */
+    color: #333; /* Dark text color */
+    font-size: 14px; /* Smaller text size */
+}
+
+.recharge-instructions h3 {
+    text-align: center; /* Center the heading */
+    margin-bottom: 10px; /* Space below the heading */
+    font-size: 16px; /* Slightly larger font size for the heading */
+}
+
+.recharge-instructions ol {
+    padding-left: 20px; /* Indent the ordered list */
+}
+
+.recharge-instructions li {
+    margin-bottom: 10px; /* Space between each step */
+    line-height: 1.0; /* Increased line height for better readability */
+}
+
+
+
+
+
+
+body {
+    min-height: 120vh;
+    background-color: #f9f9f9; /* Light background color */
+
+}
+.bank-account-container {
+    max-width: 600px; /* Set a maximum width for the container */
+    margin: 20px auto; /* Center the container */
+    padding: 20px;
+    border: 1px solid #ccc; /* Optional: Add a border to the container */
+    border-radius: 8px; /* Optional: Add rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+    background-color: #ffffff; /* Background color */
+}
+
+h2 {
+    text-align: center; /* Center the title */
+    color: #333; /* Darker text color for readability */
+}
+
+.account-details {
+    position: relative; /* Enable absolute positioning for the unbind button */
+    padding: 20px;
+    border: 1px solid #e0e0e0; /* Border for the account details section */
+    border-radius: 5px; /* Rounded corners for the account details */
+    background-color: #f9f9f9; /* Light background for contrast */
+    margin-top: 20px; /* Space between title and account details */
+}
+
+.unbind-button {
+    position: absolute; /* Position the button absolutely */
+    top: 10px; /* Adjust this value to position the button vertically */
+    right: 10px; /* Adjust this value to position the button horizontally */
+    border: none; /* Remove border */
+    background: none; /* Remove background */
+    cursor: pointer; /* Change cursor to pointer */
+    color: red; /* Change color to red */
+    font-size: 32px; /* Increase size for better visibility */
+}
+
+.account-details h3 {
+    margin-top: 0; /* Remove top margin for the account title */
+    margin-bottom: 15px; /* Space below the account title */
+    color: #007bff; /* Blue color for the account title */
+}
+
+p {
+    margin: 8px 0; /* Space between paragraph elements */
+    color: #555; /* Dark grey color for text */
+}
+
+strong {
+    color: #333; /* Darker color for strong text */
+}
+
+
+.form-container {
+    padding: 20px;
+    border: 1px solid #e0e0e0; /* Border for the form section */
+    border-radius: 5px; /* Rounded corners for the form */
+    background-color: #f9f9f9; /* Light background for contrast */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Space between form elements */
+}
+
+label {
+    display: block; /* Make labels block elements */
+    margin-bottom: 5px; /* Space between label and input */
+    font-weight: bold; /* Bold labels for emphasis */
+}
+
+input, select {
+    width: 100%; /* Full width inputs */
+    padding: 10px; /* Padding for better touch targets */
+    border: 1px solid #ccc; /* Border for inputs */
+    border-radius: 5px; /* Rounded corners for inputs */
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.submit-button {
+    background-color:  rgb(239, 158, 198); /* Primary color for the button */
+    color: white; /* White text for the button */
+    border: none; /* Remove border */
+    padding: 10px; /* Padding for button */
+    border-radius: 5px; /* Rounded corners for the button */
+    cursor: pointer; /* Change cursor to pointer */
+    font-size: 16px; /* Font size for the button */
+    width: 100%; /* Full width button */
+}
+
+.submit-button:hover {
+    background-color: hotpink; /* Darker shade on hover */
+}
+
+.add-button {
+    display: block; /* Make it a block element */
+    margin: 20px auto; /* Center it and add space above and below */
+    background-color: rgb(236, 236, 236); /* Button color */
+    color: green;
+    border: none; /* Remove border */
+    cursor: pointer; /* Change cursor to pointer */
+    padding: 15px 30px; /* Increase padding for bigger button */
+    font-size: 24px; /* Increase font size */
+    border-radius: 10px; /* Optional: Rounded corners for the button */
+    text-align: center; /* Center text inside the button */
+}
+
+.add-button:hover {
+    background-color: #dcdcdc; /* Slightly darker on hover */
+}
+    </style>
+    
+
+
+  
+
+    <div class="chatbot">
+        <button class="chatbot-button" id="openChatbot">Chat with us!</button>
+        
+    
+        <div class="chatbox" id="chatbox">
+            <div class="chatbox-header">
+                <span>FAQs Chatbot</span>
+                <button class="close-chatbox" id="closeChatbot">&times;</button>
+            </div>
+    
+            <div class="chatbox-body" id="chatboxBody">
+                <div class="chatbox-message bot-message">
+                    Hello! How can I help you today? Choose an option below or type your question.
+                </div>
+            </div>
+    
+            <div class="chatbox-faqs">
+                <button class="faq-button" onclick="sendFaq('What is the minimum investment amount?')">What is the minimum investment amount?</button>
+                <button class="faq-button" onclick="sendFaq('How can I withdraw my funds?')">How can I withdraw my funds?</button>
+                <button class="faq-button" onclick="sendFaq('What are the available investment plans?')">What are the available investment plans?</button>
+                <button class="faq-button" onclick="sendFaq('How long does it take to process withdrawals?')">How long does it take to process withdrawals?</button>
+            </div>
+    
+            <div class="chatbox-input">
+                <input type="text" id="userInput" placeholder="Type your message..." />
+                <button id="sendMessageButton">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Open and close chatbot
+        document.getElementById("openChatbot").addEventListener("click", function() {
+            document.getElementById("chatbox").style.display = "block";
+        });
+    
+        document.getElementById("closeChatbot").addEventListener("click", function() {
+            document.getElementById("chatbox").style.display = "none";
+        });
+    
+        // Function to handle FAQs selection
+        function sendFaq(faq) {
+            addMessage(faq, 'user-message'); // Add user's message
+            setTimeout(function() {
+                autoReply(faq); // Automatically reply after a delay
+            }, 1000);
+        }
+    
+        // Function to handle user input
+        document.getElementById("sendMessageButton").addEventListener("click", function() {
+            const userInput = document.getElementById("userInput").value;
+            if (userInput) {
+                addMessage(userInput, 'user-message'); // Add user's message
+                document.getElementById("userInput").value = ''; // Clear input field
+                setTimeout(function() {
+                    autoReply(userInput); // Automatically reply after a delay
+                }, 1000);
+            }
+        });
+    
+        function addMessage(text, className) {
+            const message = document.createElement("div");
+            message.className = "chatbox-message " + className;
+            message.innerHTML = text; // Use innerHTML to render HTML content
+            document.getElementById("chatboxBody").appendChild(message);
+            document.getElementById("chatboxBody").scrollTop = document.getElementById("chatboxBody").scrollHeight;
+        }
+        
+    
+        // Auto-reply based on user input (Investment Platform)
+        function autoReply(userInput) {
+            let reply = '';
+    
+
+
+            switch (userInput.trim().toLowerCase()) {  // Using trim() to remove extra spaces
+                case 'what is the minimum investment?':
+                case 'minimum investment?':
+                case 'what is the minimum investment amount?':
+                case 'what’s the minimum investment?':  // Another phrasing variation
+                reply = `
+                <div class="recharge-instructions">
+                    <h3>How to Recharge Your Account Step by Step:</h3>
+                    <ol>
+                        <li><strong>Select an amount to recharge</strong> or enter a custom amount (minimum ₱300).</li>
+                        <li><strong>Choose your preferred payment method</strong> (GCash or PayPal).</li>
+                        <li><strong>For GCash users:</strong>
+                            <ul>
+                                <li>Scan the QR code above or click the provided link to open your GCash app.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Enter the payment details</strong> and confirm the payment.</li>
+                        <li><strong>Once payment is confirmed,</strong> click "Complete Recharge" to finalize your transaction.</li>
+                        <li><strong>Once the payment is successful,</strong> your recharge amount will be displayed in your balance.</li>
+                    </ol>
+                </div>
+            `;
+            break;
+                case 'how can i withdraw my funds?':
+                    reply = 'You can withdraw your funds through the "Withdraw" section of your account.';
+                    break;
+                case 'what are the available investment plans?':
+                    reply = 'We offer various investment plans, including short-term and long-term options.';
+                    break;
+                case 'how long does it take to process withdrawals?':
+                    reply = 'Withdrawals are typically processed within 24-48 hours.';
+                    break;
+                default:
+                    reply = 'Sorry, I didn’t understand that. Please try again or choose one of the available FAQs.';
+            }
+            
+            addMessage(reply, 'bot-message');
+            
+        }
+    </script>
+    
+ <!-- Add Font Awesome CDN for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<div class="bank-account-container">
+    <h2>Bank Account Details</h2>
+
+    <div id="bankAccountDetails" class="account-details">
+        <button id="unbindButton" title="Unbind Account" class="unbind-button">
+            <i class="fas fa-times"></i> <!-- X icon for unbind -->
+        <p><strong>Bank Account Type:</strong> <span id="accountType"></span></p>
+        <p><strong>Account Name:</strong> <span id="realName"></span></p>
+        <p><strong>Account No:</strong> <span id="accountNo"></span></p>
+        <p><strong>Fund Password:</strong> <span id="fundPasswordDisplay">********</span></p>
+    </div>
+
+    <div id="bindAccountForm" class="form-container">
+        <h3>Bind Your Bank Account</h3>
+        <form id="bankAccountForm" onsubmit="bindBankAccount(event)">
+            <div class="form-group">
+                <label for="accountTypeInput">Bank Account Type:</label>
+                <select id="accountTypeInput" required>
+                    <option value="gcash">GCash</option>
+                    <option value="paypal">PayPal</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="realNameInput">Account Name:</label>
+                <input type="text" id="realNameInput" required>
+            </div>
+            <div class="form-group">
+                <label for="accountNoInput">Account No:</label>
+                <input type="text" id="accountNoInput" required>
+            </div>
+            <div class="form-group">
+                <label for="fundPasswordInput">Fund Password:</label>
+                <input type="password" id="fundPasswordInput" required>
+            </div>
+            <button type="submit" class="submit-button">Bind Account</button>
+        </form>
+    </div>
+</div>
+
+<button id="addBankAccountButton" class="add-button">
+    <i class="fas fa-plus"></i> <!-- + icon for adding a new account -->
+</button>
+</div>
+
+
+
+<script>
+   // Function to bind a new bank account
+function bindBankAccount(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get the values from the form
+    const accountType = document.getElementById("accountTypeInput").value;
+    const realName = document.getElementById("realNameInput").value;
+    const accountNo = document.getElementById("accountNoInput").value;
+    const fundPassword = document.getElementById("fundPasswordInput").value;
+
+    // Create a new bank account object
+    const bankAccount = {
+        accountType,
+        realName,
+        accountNo,
+        fundPassword
+    };
+
+    // Get existing accounts from local storage or initialize an empty array
+    const existingAccounts = JSON.parse(localStorage.getItem('bankAccounts')) || [];
+    existingAccounts.push(bankAccount); // Add the new account to the array
+
+    // Save the updated account list to local storage
+    localStorage.setItem('bankAccounts', JSON.stringify(existingAccounts));
+
+    // Display the updated list of bank accounts
+    displayBankAccounts();
+    document.getElementById('bankAccountForm').reset(); // Reset the form
+}
+
+// Function to display all bank accounts
+function displayBankAccounts() {
+    const accountListContainer = document.getElementById('bankAccountDetails');
+    accountListContainer.innerHTML = ''; // Clear previous account details
+
+    const accountList = JSON.parse(localStorage.getItem('bankAccounts')) || [];
+
+    // Display each account
+    accountList.forEach((account, index) => {
+        const accountDiv = document.createElement('div');
+        accountDiv.classList.add('account-item');
+        accountDiv.innerHTML = `
+            <p><strong>Bank Account Type:</strong> ${account.accountType.charAt(0).toUpperCase() + account.accountType.slice(1)}</p>
+            <p><strong>Account Name:</strong> ${account.realName}</p>
+            <p><strong>Account No:</strong> ${account.accountNo}</p>
+            <p><strong>Fund Password:</strong> ********</p>
+            <button class="unbindButton" data-index="${index}">X</button>
+        `;   
+        accountListContainer.appendChild(accountDiv); // Append to the account details container
+    });
+
+    // Show the bank account details section if accounts exist
+    accountListContainer.style.display = accountList.length > 0 ? 'block' : 'none';
+}
+
+// Function to unbind (delete) a bank account
+function unbindBankAccount(event) {
+    const index = event.target.getAttribute('data-index');
+
+    // Retrieve existing accounts
+    const existingAccounts = JSON.parse(localStorage.getItem('bankAccounts')) || [];
+
+    // Remove the selected account
+    existingAccounts.splice(index, 1);
+    localStorage.setItem('bankAccounts', JSON.stringify(existingAccounts));
+
+    // Remove the account from display
+    displayBankAccounts();
+}
+
+// Event listeners
+document.getElementById('bankAccountForm').addEventListener('submit', bindBankAccount);
+document.getElementById('addBankAccountButton').addEventListener('click', function() {
+    document.getElementById('bindAccountForm').style.display = 'block'; // Show the form to add a new account
+});
+
+// Event delegation for unbind buttons
+document.body.addEventListener('click', function(event) {
+    if (event.target.classList.contains('unbindButton')) {
+        unbindBankAccount(event);
+    }
+});
+
+// Load bank account details on page load
+window.onload = function() {
+    displayBankAccounts(); // Display existing bank accounts
+};
+</script>
+
+
+
+
+
+<script>
+    const chatbotIcon = document.getElementById('chatbotIcon');
+
+    let offsetX, offsetY;
+
+    chatbotIcon.onmousedown = function(event) {
+        event.preventDefault(); // Prevent default action
+
+        // Calculate the mouse offset from the icon's position
+        offsetX = event.clientX - chatbotIcon.getBoundingClientRect().left;
+        offsetY = event.clientY - chatbotIcon.getBoundingClientRect().top;
+
+        // Move the icon when the mouse moves
+        document.addEventListener('mousemove', moveIcon);
+        
+        // Stop moving the icon when the mouse button is released
+        document.onmouseup = function() {
+            document.removeEventListener('mousemove', moveIcon);
+            document.onmouseup = null; // Remove the mouseup event
+        };
+    };
+    function moveIcon(event) {
+        // Set the position of the icon based on mouse movement
+        chatbotIcon.style.left = event.pageX - offsetX + 'px';
+        chatbotIcon.style.top = event.pageY - offsetY + 'px';
+    }
+
+    // Prevent default drag behavior on images
+    chatbotIcon.ondragstart = function() {
+        return false;
+    };
+</script>
+    
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+ 
+     
+        .bank-account-container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            margin-top: 30px;
+        }
+    
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    
+        .form-group {
+            margin-bottom: 15px;
+        }
+    
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+    
+        input[type="text"],
+        select {
+            width: 95%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    
+        .submit-btn {
+            width: 50%;
+            padding: 8px;
+            border: none;
+            border-radius: 8px;
+            background-color: #28a745; /* Green color */
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            position: center;
+        }
+    
+        .submit-btn:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+        .footer {
+            background-color: hotpink;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-radius: 15px;
+        }
+        
+        .footer-icons {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .footer-icon {
+            width: 40px; /* Adjust size as needed */
+            height: 40px; /* Adjust size as needed */
+        }
+        
+    </style>
+
+
+</div>
+</div>
+</div>
+
+<footer class="footer">
+<div class="footer-icons">
+    <a href="dashboard.html">
+        <img src="home-icon.png" alt="Home" class="footer-icon">
+    </a>
+    <a href="invest.html">
+        <img src="invest-icon.png" alt="Invest" class="footer-icon">
+ 
+    </a>
+    <a href="teams.html">
+        <img src="team-icon.png" alt="Teams" class="footer-icon">
+
+    </a>
+    <a href="mine.html" id="logoutLink">
+        <img src="mine-icon.png" alt="Mine" class="footer-icon">
+     
+    </a>
+</div>
+</footer>
+</div>
+
+
+</body>
+</html>
+

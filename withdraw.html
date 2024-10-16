@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .withdraw-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 50px; /* Adjusted padding for a balanced look */
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 25px; /* Increased space between fields */
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        
+        .form-group input {
+            width: 100%; /* Full width for input fields */
+            padding: 15px; /* Larger padding for bigger input fields */
+            border-radius: 8px; /* Rounded input fields */
+            border: 1px solid #ccc;
+            font-size: 18px; /* Larger font size for better readability */
+        }
+        
+        .btn-submit {
+            width: 100%; /* Full width for submit button */
+            padding: 15px; /* Larger padding for bigger button */
+            background-color: rgb(255, 159, 207);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 20px; /* Larger font size */
+            cursor: pointer;
+        }
+        
+        .btn-submit:hover {
+            background-color: hotpink;
+        }
+        
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+        
+        #withdrawMessage {
+            margin-top: 15px; /* Spacing above message */
+        }
+        
+    
+
+
+    
+        .footer {
+            background-color: hotpink;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-radius: 15px;
+        }
+        
+        .footer-icons {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .footer-icon {
+            width: 40px; /* Adjust size as needed */
+            height: 40px; /* Adjust size as needed */
+        }
+    </style>
+
+
+</head>
+<body>
+
+    <div class="withdraw-container">
+        <h2>Withdraw Funds</h2>
+    
+        <form id="withdrawForm">
+            <!-- Withdrawal Amount -->
+            <div class="form-group">
+                <label for="withdrawAmount">Withdrawal Amount:</label>
+                <input type="number" id="withdrawAmount" placeholder="Enter amount" required>
+            </div>
+    
+            <!-- Withdrawal Method -->
+            <div class="form-group">
+                <label for="withdrawMethod">Withdrawal Method:</label>
+                <select id="withdrawMethod" required>
+                    <option value="" disabled selected>Select a method</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="ewallet">GCash</option>
+                </select>
+            </div>
+    
+            <!-- Fund Password -->
+            <div class="form-group">
+                <label for="withdrawFundPassword">Fund Password:</label>
+                <input type="text" id="withdrawFundPassword" required>
+            </div>
+    
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage" style="display: none;">Please fill out all fields.</div>
+    
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit">Withdraw</button>
+        </form>
+    
+        <div id="withdrawMessage"></div>
+    </div>
+    
+    <script>
+    document.getElementById('withdrawForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+
+        const withdrawAmount = document.getElementById('withdrawAmount').value;
+        const withdrawFundPassword = document.getElementById('withdrawFundPassword').value;
+
+        // Retrieve bank account details from localStorage
+        const bankAccount = JSON.parse(localStorage.getItem('bankAccount'));
+
+        // Validate that all fields are filled
+        if (!withdrawAmount || !withdrawFundPassword) {
+            document.getElementById('errorMessage').style.display = 'block'; // Show error message
+            return;
+        }
+
+        // Check fund password
+        if (bankAccount && withdrawFundPassword === bankAccount.fundPassword) {
+            // Logic to proceed with the withdrawal (e.g., deduct amount from user balance)
+            showMessage("Withdrawal successful! Amount: " + withdrawAmount, "green");
+            // Additional logic for processing the transfer to the user's bank account could go here
+        } else {
+            showMessage("Incorrect fund password. Please try again.", "red");
+        }
+    });
+
+    function showMessage(message, color) {
+        const messageElement = document.getElementById('withdrawMessage');
+        messageElement.textContent = message;
+        messageElement.style.color = color;
+
+        // Add shake class for animation (optional)
+        messageElement.classList.add('shake');
+        setTimeout(() => {
+            messageElement.classList.remove('shake');
+        }, 500);
+    }
+</script>
+   
+    
+
+
+    <footer class="footer">
+        <div class="footer-icons">
+            <a href="dashboard.html">
+                <img src="home-icon.png" alt="Home" class="footer-icon">
+            </a>
+            <a href="invest.html">
+                <img src="invest-icon.png" alt="Invest" class="footer-icon">
+         
+            </a>
+            <a href="teams.html">
+                <img src="team-icon.png" alt="Teams" class="footer-icon">
+        
+            </a>
+            <a href="mine.html" id="logoutLink">
+                <img src="mine-icon.png" alt="Mine" class="footer-icon">
+             
+            </a>
+        </div>
+        </footer>
+        </div>
+
+</body>
+</html>

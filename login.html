@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeilVest Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Set a font for the body */
+            background-color: #fff; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            text-align: center;
+        }
+
+        .login-form {
+            background-color: #fff; /* White background for the form */
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .app-title {
+            color: hotpink;
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-align: center; /* Center the title */
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 10px; /* Space between input fields */
+            margin-left: -10px;
+            display: flex; /* Use flexbox for alignment */
+            align-items: center; /* Center items vertically */
+            border: 1px solid hotpink; /* Optional: Border for input fields */
+            border-radius: 10px; /* Rounded corners */
+            padding: 10px; /* Padding around the content */
+        }
+
+        .icon {
+            width: 20px; /* Icon size */
+            height: 20px; /* Icon size */
+            margin-right: 10px; /* Space between icon and input */
+        }
+        
+        input {
+            border: none; /* No border for the input */
+            flex: 1; /* Allow input to grow and fill available space */
+            font-size: 16px; /* Font size for input text */
+            outline: none; /* No outline on focus */
+            color: #333; /* Text color */
+        }
+        
+        input::placeholder {
+            color: #aaa; /* Placeholder text color */
+        }
+        
+        .login-btn {
+            width: 100%; /* Ensures button occupies the full width */
+            background-color: hotpink;
+            color: #fff;
+            border: none;
+            padding: 15px; /* Padding for better button appearance */
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 20px; /* Space above button */
+            transition: background-color 0.3s; /* Smooth transition effect */
+        }
+        
+        .login-btn:hover {
+            background-color: #d81b60; /* Darker pink on hover */
+        }
+        .registration-link {
+            display: block;
+            margin-top: 20px;
+            color: hotpink;
+            text-decoration: none;
+        }
+        
+        .registration-link:hover {
+            color: #d81b60;
+        }
+        #message {
+            color: red; /* Default color for message */
+            text-align: center; /* Center the text */
+            margin-top: 10px; /* Space above message */
+            height: 40px; /* Fixed height to prevent layout shifts */
+            overflow: hidden; /* Hide overflow to keep layout neat */
+        }    
+        @media (max-width: 600px) {
+            .registration-container {
+                width: 90%;
+            }
+        
+        }
+        @keyframes shake {
+            0% { transform: translate(1px, 0); }
+            25% { transform: translate(-1px, 0); }
+            50% { transform: translate(1px, 0); }
+            75% { transform: translate(-1px, 0); }
+            100% { transform: translate(0, 0); }
+        }
+        .shake {
+            animation: shake 0.5s;
+        }
+    </style>
+
+
+</head>
+<body>
+    <div class="login-container">
+        <h1 class="app-title">VeilVest</h1>
+    
+        <form id="loginForm" class="login-form">
+            <div class="form-group">
+                <img src="phone-icon.png" alt="phone icon" class="icon">
+                <input type="text" id="login-phone" placeholder="Please enter phone number" required>
+            </div>
+            <div class="form-group">
+                <img src="password-icon.png" alt="password icon" class="icon">
+                <input type="password" id="login-password" placeholder="Please enter your password" required>
+            </div>
+    
+            <div class="save-password-group">
+                <input type="checkbox" id="save-password">
+                <label for="save-password">Save Password</label>
+            </div>
+    
+            <button type="submit" class="login-btn">Submit</button>
+            <p><a href="reset-password.html" id="forgotPasswordLink">Forgot Password?</a></p>
+            <div>
+                <a href="index.html" class="registration-link">Register Account</a>
+            </div>
+            <div id="registerMessage" style="display: none; color: red;">You must register a phone number before logging in!</div>
+            <div id="successMessage" style="display: none; color: green;">Login successful! Redirecting...</div>
+
+        </form>
+    
+    <script>
+        // When the login form is submitted
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+    
+            // Get the phone number and password values from the input fields
+            const phoneNumber = document.getElementById('login-phone').value;
+            const password = document.getElementById('login-password').value;
+    
+            // Save the phone number (registered number) to localStorage
+            localStorage.setItem('registeredNumber', phoneNumber);
+    
+            // For demonstration purposes, you can redirect the user to the "Mine" page
+            // after successfully logging in.
+            window.location.href = 'mine.html'; // Redirect to "Mine" page
+        });
+    </script>
+
+
+    
+    <script>
+        // Check if user is logged in and session is valid
+        const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
+        const loggedInUser = localStorage.getItem('loggedInUser');
+        const loginTime = localStorage.getItem('loginTime');
+    
+        if (loggedInUser && loginTime) {
+            const currentTime = new Date().getTime();
+            if (currentTime - loginTime > oneHour) {
+                // If more than 1 hour has passed, log the user out
+                localStorage.removeItem('loggedInUser');
+                localStorage.removeItem('loginTime');
+                window.location.href = 'login.html'; // Redirect to login
+            } else {
+                // If still within 1 hour, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }
+        }
+    
+        // Auto-fill the saved password if available
+        const savedPassword = localStorage.getItem('savedPassword');
+        if (savedPassword) {
+            document.getElementById('login-password').value = savedPassword;
+            document.getElementById('save-password').checked = true; // Check the "Save Password" checkbox
+        }
+    
+
+
+
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+
+    // Get the registered number (phone) and password from the login form
+    const loginPhone = document.getElementById('login-phone').value.trim();
+    const loginPassword = document.getElementById('login-password').value;
+
+    // Get registered users from localStorage
+    const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+
+    // Check if there are registered users
+    if (registeredUsers.length === 0) {
+        alert("No users registered. Please register before logging in.");
+        return; // Prevent further execution
+    }
+
+    // Validate login credentials
+    const user = registeredUsers.find(user => user.phone === loginPhone && user.password === loginPassword);
+
+    if (user) {
+        // Store logged-in user data in localStorage
+        localStorage.setItem('loggedInUser', loginPhone);
+        localStorage.setItem('loginTime', new Date().getTime());
+
+        // Store the registered number to localStorage
+        localStorage.setItem('registeredNumber', loginPhone);
+
+        // Show success message
+        const successMessage = document.getElementById('successMessage');
+        successMessage.style.display = 'block';
+
+        // Redirect to the Mine page after a short delay
+        setTimeout(() => {
+            window.location.href = 'mine.html';
+        }, 2000); // Adjust the delay (2000ms = 2 seconds)
+    } else {
+        // Show alert for invalid credentials
+        alert("Invalid phone number or password. Please try again.");
+
+        // Clear input fields for easier retry
+        document.getElementById('login-phone').value = '';
+        document.getElementById('login-password').value = '';
+
+        // Do not store any phone number in localStorage
+        localStorage.removeItem('registeredNumber'); // Ensure registered number is cleared
+    }
+});
+
+    
+    
+           
+        
+        
+    
+
+        
+        // Logout functionality (if needed on the same page)
+        const logoutLink = document.getElementById('logoutLink');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default link behavior
+    
+                // Clear user session
+                localStorage.removeItem('loggedInUser');
+                localStorage.removeItem('loginTime');
+                localStorage.removeItem('savedPassword'); // Optionally clear saved password when logging out
+    
+                alert("You have successfully logged out.");
+                window.location.href = 'login.html'; // Redirect to login page
+            });
+        }
+    </script>
+    
+
+    
+
+    <script src="scripts.js"></script>
+</body>
+</html>
